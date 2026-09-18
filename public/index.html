@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process Studio · Migration & Onepager</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">ix</div>
+  <div>
+    <h1>Process Studio</h1>
+    <span>Migration &amp; Prozessdokumentation · Inventx</span>
+  </div>
+<nav class="top-nav"><button onclick="showHome()">Übersicht</button><button onclick="openWorkspace()">Arbeitsbereich</button><span id="api-status" role="status">Verbindung prüfen…</span></nav></header>
+
+<main id="home">
+<div class="home-top"><span class="eyebrow">PROZESSMANAGEMENT / WORKSPACE</span><span class="workspace-pill">● Persönlicher Arbeitsbereich</span></div>
+<section class="hero"><div><div class="eyebrow accent">VON DER BESCHREIBUNG ZUM PROZESS.</div><h2>Wissen bewahren.<br>Prozesse <em>klar machen.</em></h2><p>Bestehende Dokumentation migrieren oder einen neuen Prozess beschreiben. Aus einer Grundlage entstehen Onepager, BPMN-Modell und klare Verantwortlichkeiten.</p><button class="hero-cta" onclick="openWorkspace('migrate')">Migration starten <span>↗</span></button><button class="demo-link" onclick="loadDemo()">Beispiel erkunden →</button></div>
+<div class="process-visual" aria-label="Vom bestehenden Dokument zu Onepager, BPMN und RACI"><div class="visual-tag">EINE QUELLE. EIN KLARES BILD.</div><div class="source-card"><span>≡</span><div>Dein Prozess<small>Wissen · Rollen · Ablauf</small></div><b>01</b></div><div class="flow-line"></div><div class="visual-targets"><div>▤<strong>Onepager</strong><small>Kompakt dokumentiert</small></div><div>◇<strong>BPMN</strong><small>Visuell modelliert</small></div><div>⊞<strong>RACI</strong><small>Klar zugeordnet</small></div></div><div class="visual-foot"><span>●</span> Zusammenhängend. Nachvollziehbar. Exportierbar.</div></div></section>
+<div class="section-heading"><h3>Wie möchtest du starten?</h3><span>Dein nächster Schritt</span></div>
+<section class="entry-grid"><button class="entry-card" onclick="openWorkspace('migrate')"><span class="card-number">01 / MIGRATION</span><span class="card-arrow">↗</span><h3>Bestehenden Prozess<br>überführen</h3><p>Alte Dokumentation einlesen, Kapitel zuordnen und ins neue Template übertragen.</p><span class="card-foot">Mit Herkunftsnachweis & Migrationsreport →</span></button><button class="entry-card" onclick="openWorkspace('free')"><span class="card-number">02 / NEUER PROZESS</span><span class="card-arrow">↗</span><h3>Prozess-Onepager<br>erstellen</h3><p>Ablauf in eigenen Worten beschreiben und strukturiert dokumentieren.</p><span class="card-foot">Mit BPMN-Modell & RACI-Matrix →</span></button><button class="entry-card demo-card" onclick="loadDemo()"><span class="card-number">03 / ENTDECKEN</span><span class="card-arrow">↗</span><h3>Am Beispiel<br>kennenlernen</h3><p>Service Request: vom Auftrag bis zum Abschluss. Alle Ansichten direkt ausprobieren.</p><span class="card-foot">Vorbereitetes Beispiel · ohne KI-Aufruf →</span></button></section>
+<div class="section-heading recent-heading"><h3>Zuletzt bearbeitet</h3><span id="home-count">0 Prozesse</span></div><section id="home-recent"></section>
+<footer>Process Studio <span>Entwürfe werden in diesem Browser gespeichert. KI-Ergebnisse vor Freigabe fachlich prüfen.</span></footer></main><div class="app" id="workspace" hidden>
+  <!-- Input Panel -->
+  <div class="input-panel">
+    <div id="saved-section">
+      <div class="section-label" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Bearbeitete Prozesse</span>
+        <span class="saved-count" id="saved-count">0</span>
+      </div>
+      <div class="saved-list" id="saved-list">
+        <div class="saved-empty">Noch keine gespeicherten Prozesse</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="mode-switch">
+      <button class="mode-btn active" id="mode-free" onclick="setMode('free')">Freitext</button>
+      <button class="mode-btn" id="mode-migrate" onclick="setMode('migrate')">Migration</button>
+    </div>
+
+    <div id="block-free">
+      <label class="section-label" for="process-input">Prozessbeschreibung</label>
+      <textarea id="process-input" placeholder="Beschreibe den Prozess in Freitext…
+
+Beispiel: «Der Kunde stellt einen Kreditantrag online. Die Sachbearbeitung prüft die Unterlagen und leitet bei Bedarf an die Risikoabteilung weiter. Beim positiven Entscheid wird der Vertrag erstellt und versendet.»"></textarea>
+    </div>
+
+    <div id="block-migrate" style="display:none">
+      <label class="section-label" for="legacy-input">Alte Prozessdokumentation</label>
+      <textarea id="legacy-input" placeholder="Alte Prozessdokumentation hier einfügen — Markdown-Export aus Confluence oder Text aus dem PDF.
+
+Erkannt werden die Kapitel des alten Templates: Basisinformationen, Personen, Prozessüberblick, Prozessziel, Definitionen, Input-/Output-Trigger, Kritische Erfolgsfaktoren, Prozessschritte, Rollen, Abhängigkeiten, Prozessrisiken, Applikationen, Links."></textarea>
+      <label class="upload-label">Textdatei einlesen (.txt / .md)<input id="source-file" type="file" accept=".txt,.md,text/plain,text/markdown"></label><div class="legacy-opts">
+        <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); cursor:pointer;">
+          <input type="checkbox" id="opt-pdforder" style="accent-color:var(--accent);">
+          Titelreihenfolge erzwingen: Titel <b style="color:var(--text)">nach</b> Inhalt
+        </label>
+        <button class="btn-secondary" style="margin-top:2px" onclick="previewLegacy()">⌕ Kapitel erkennen</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Optionen</div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); cursor:pointer;">
+          <input type="checkbox" id="opt-onepager" checked style="accent-color:var(--accent);">
+          Prozess-Onepager generieren
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); cursor:pointer;">
+          <input type="checkbox" id="opt-risks" checked style="accent-color:var(--accent);">
+          Prozessrisiken ableiten
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); cursor:pointer;">
+          <input type="checkbox" id="opt-clarify" checked style="accent-color:var(--accent);">
+          Rückfragen bei Unklarheiten zulassen
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="btn-generate" onclick="generate()">
+      <span id="btn-icon">▶</span>
+      <span id="btn-text">Prozess generieren</span>
+    </button>
+
+    <div class="status-bar" id="status-bar" role="status" aria-live="polite">
+      <span>Bereit — Prozessbeschreibung eingeben und generieren</span>
+    </div>
+
+    <hr class="divider">
+
+    <div>
+      <div class="section-label">Beispiele</div>
+      <div class="examples-grid">
+        <div class="example-chip" onclick="setExample(0)">💳 Kreditantrag (Bank)</div>
+        <div class="example-chip" onclick="setExample(1)">🛒 Bestellabwicklung (E-Commerce)</div>
+        <div class="example-chip" onclick="setExample(2)">🔧 IT-Incident Management</div>
+        <div class="example-chip" onclick="setExample(3)">👤 Mitarbeiter-Onboarding (HR)</div>
+        <div class="example-chip" onclick="setExample(4)">📋 Change Management (ITSM)</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <button class="btn-secondary" onclick="resetAll()">↺ Neuer Prozess</button>
+  </div>
+
+  <!-- Output Panel -->
+  <div class="output-panel">
+    <div class="tabs">
+      <div class="tab active" id="tab-bpmn" onclick="switchTab('bpmn')">BPMN Diagramm</div>
+      <div class="tab" id="tab-onepager" onclick="switchTab('onepager')">Prozess-Onepager</div>
+      <div class="tab" id="tab-raci" onclick="switchTab('raci')">RACI-Matrix</div>
+      <div class="tab" id="tab-xml" onclick="switchTab('xml')">XML / JSON</div>
+      <div class="tab" id="tab-migration" onclick="switchTab('migration')" style="display:none">Migrationsreport</div>
+      <div class="tab" id="tab-admin" onclick="switchTab('admin')">⚙ Admin</div>
+      <div class="tab-actions">
+        <button class="btn-icon btn-check" id="btn-check" onclick="runProcessCheck()" style="display:none">⚦ Prozess-Check</button>
+        <button class="btn-icon" id="btn-export-bpmn" onclick="exportBpmnXml()" style="display:none" title="BPMN 2.0 XML für Camunda / bpmn.io / ADONIS">↓ BPMN 2.0</button>
+        <button class="btn-icon" id="btn-confluence" onclick="exportConfluence()" style="display:none" title="Onepager + RACI als Confluence Storage Format">↓ Confluence</button>
+        <button class="btn-icon" id="btn-export-png" onclick="exportPNG()" style="display:none">↓ PNG</button>
+        <button class="btn-icon" id="btn-export-svg" onclick="exportSVG()" style="display:none">↓ SVG</button>
+        <button class="btn-icon" id="btn-export-xml" onclick="exportXML()" style="display:none">↓ JSON</button>
+        <button class="btn-icon" id="btn-copy-xml" onclick="copyXML()" style="display:none">⎘ JSON kopieren</button>
+      </div>
+    </div>
+
+    <div class="tab-content active" id="content-bpmn">
+      <div id="bpmn-canvas">
+        <div class="empty-state" id="bpmn-empty">
+          <div class="empty-icon" style="color:var(--ix-red)">▢</div>
+          <h3>Noch kein Diagramm</h3>
+          <p>Gib einen Prozess ein und klicke «Prozess generieren». Das BPMN Swimlane-Modell erscheint hier.</p>
+        </div>
+        <div id="bpmn-svg-wrapper" style="display:none;"></div>
+      </div>
+      <div class="diff-panel" id="diff-panel" style="display:none;"></div>
+      <div class="refine-bar" id="refine-bar" style="display:none;">
+        <button class="btn-undo" id="btn-undo" onclick="undoModel()" title="Letzten Umbau rückgängig machen" disabled>↶</button>
+        <button class="btn-undo" id="btn-sync" onclick="syncDescription()" title="Prozessbeschreibung aus aktuellem Modell neu erzeugen (Sync)">⇄</button>
+        <input type="text" id="refine-input" class="refine-input"
+          placeholder="Diagramm anpassen — z.B. «Füge nach der Bonitätsprüfung eine Vier-Augen-Kontrolle ein» oder «Teile die Lane Sachbearbeitung in Front und Back Office»"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();refineDiagram();}">
+        <button class="btn-refine" id="btn-refine" onclick="refineDiagram()">
+          <span id="refine-icon">✎</span> Anpassen
+        </button>
+      </div>
+    </div>
+
+    <div class="tab-content" id="content-onepager">
+      <div id="onepager-content">
+        <div class="empty-state">
+          <div class="empty-icon">📄</div>
+          <h3>Noch kein Onepager</h3>
+          <p>Der Prozess-Onepager mit Steckbrief und Prozessschritten wird nach der Generierung hier angezeigt.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="content-raci">
+      <div id="raci-content">
+        <div class="empty-state">
+          <div class="empty-icon">🅡</div>
+          <h3>Noch keine RACI-Matrix</h3>
+          <p>Die RACI-Matrix wird automatisch aus Prozessbeschreibung und Modell abgeleitet, sobald ein Diagramm vorliegt.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="content-xml">
+      <div id="xml-content">
+        <div class="empty-state">
+          <div class="empty-icon">{ }</div>
+          <h3>Noch keine Daten</h3>
+          <p>Logic-Core JSON und BPMN XML erscheinen hier nach der Generierung.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="content-migration">
+      <div id="migration-content">
+        <div class="empty-state">
+          <div class="empty-icon">⇄</div>
+          <h3>Noch kein Migrationsreport</h3>
+          <p>Wechsle links auf «Migration», füge eine alte Prozessdokumentation ein und generiere. Der Report zeigt danach Feld für Feld, was übernommen, umformuliert, angereichert oder neu generiert wurde.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="content-admin">
+      <div id="admin-content">
+        <div class="admin-panel">
+          <div class="admin-header">
+            <div>
+              <h2>Rollenkatalog</h2>
+              <p>Offiziell erfasste Rollen bei Inventx. Nur diese Rollen werden im Prozessmodell als Swimlanes verwendet. Benötigt ein Prozess eine nicht erfasste Rolle, wird sie im Diagramm als «nicht erfasst» markiert.</p>
+            </div>
+            <div class="admin-role-count"><span id="role-count">0</span> Rollen</div>
+          </div>
+          <div class="admin-add-row">
+            <input type="text" id="new-role-input" class="admin-add-input"
+              placeholder="Neue Rolle erfassen…"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();addRole();}">
+            <button class="btn-refine" onclick="addRole()">+ Rolle hinzufügen</button>
+          </div>
+          <input type="text" id="role-filter" class="admin-filter-input"
+            placeholder="🔎 Rollen filtern…" oninput="renderRoleCatalog()">
+          <div class="admin-role-list" id="admin-role-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Clarification Modal -->
+<div class="modal-overlay" id="clarify-modal" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-icon">?</div>
+      <div>
+        <h2>Rückfragen zur Präzisierung</h2>
+        <p>Beantworte diese Punkte, damit das Diagramm zielgerichtet erstellt wird. Du kannst Fragen auch überspringen.</p>
+      </div>
+    </div>
+    <div class="modal-body" id="clarify-questions"></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" style="width:auto" onclick="skipClarification()">Ohne Antworten fortfahren</button>
+      <button class="btn-generate" style="width:auto" onclick="submitClarification()">
+        <span>✓</span> Antworten übernehmen & generieren
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Process Check Modal -->
+<div class="modal-overlay" id="check-modal" style="display:none;">
+  <div class="modal" style="max-width:720px;">
+    <div class="modal-header">
+      <div class="modal-icon" style="background:var(--ix-orange)">⚦</div>
+      <div>
+        <h2>Prozess-Check</h2>
+        <p>Analyse auf Logik, Effizienz, Rollentrennung, Optimierungspotenzial und Risiken. Vorschläge einzeln annehmen oder ablehnen.</p>
+      </div>
+    </div>
+    <div class="modal-body" id="check-body"></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" style="width:auto" onclick="closeCheckModal()">Schliessen</button>
+      <button class="btn-generate" style="width:auto" id="btn-apply-check" onclick="applyAcceptedFindings()" disabled>
+        <span>✓</span> Ausgewählte Umbauten anwenden
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="/storage.js"></script><script src="/app.js"></script><script src="/homepage.js"></script>
+</body>
+</html>

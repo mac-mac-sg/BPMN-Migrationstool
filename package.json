@@ -1,0 +1,9 @@
+{
+  "name": "bpmn-migrationstool",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Process Studio: Prozessmigration, BPMN und Onepager auf Basis der Projektvorlage",
+  "engines": {"node": ">=22"},
+  "scripts": {"start": "node --env-file-if-exists=.env server.mjs", "test": "node --test", "check": "node --check server.mjs && node --check public/app.js && node --check public/homepage.js"}
+}
