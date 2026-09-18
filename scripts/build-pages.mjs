@@ -1,0 +1,10 @@
+import {cp,readFile,writeFile,mkdir,rm} from 'node:fs/promises';
+const root=new URL('../',import.meta.url);
+const target=new URL('_site/',root);
+await rm(target,{recursive:true,force:true});
+await mkdir(target,{recursive:true});
+await cp(new URL('public/',root),target,{recursive:true});
+const index=new URL('index.html',target);
+await writeFile(index,(await readFile(index,'utf8')).replace('<html lang="de">','<html lang="de" data-hosting="static">'));
+await writeFile(new URL('.nojekyll',target),'');
+console.log('GitHub Pages frontend built in _site. No backend or secrets included.');

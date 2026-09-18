@@ -1,3 +1,10 @@
+// Static Pages has no API server. Fail clearly without sending process data.
+function processApiFetch(url, options) {
+  if (document.documentElement.dataset.hosting === 'static') {
+    return Promise.resolve(new Response(JSON.stringify({error:{message:'Die KI-Erstellung ist in dieser Online-Vorschau noch nicht verfügbar. Dafür muss ein Backend angebunden werden. Das vorbereitete Beispiel und Exporte sind nutzbar.'}}), {status:503,headers:{'Content-Type':'application/json'}}));
+  }
+  return fetch(url, options);
+}
 
 // ─── Examples ────────────────────────────────────────────────────────────────
 const EXAMPLES = [
@@ -222,7 +229,7 @@ Regeln:
 - Biete pro Frage 2-4 plausible Optionen als Auswahlhilfe an (der Nutzer kann auch frei antworten).
 - Fragen auf Deutsch (Swiss-Konvention, kein ß).`;
 
-  const response = await fetch('/api/messages', {
+  const response = await processApiFetch('/api/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -355,7 +362,7 @@ Regeln:
 - Bewahre bestehende boundaryEvents, dataObjects, externalParticipants und messageFlows, sofern die Änderung sie nicht betrifft.
 - Ändere nur, was die Anweisung verlangt; lass den Rest unverändert.`;
 
-  const response = await fetch('/api/messages', {
+  const response = await processApiFetch('/api/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -575,7 +582,7 @@ Wähle die thematisch passendste offizielle Rolle (z.B. "Service Desk Agent" sta
 
 VORGEHEN (intern, zweistufig): Analysiere zuerst still: (a) beteiligte Rollen→Lanes, (b) linearer Happy-Path, (c) Entscheidungspunkte→XOR-Gateways mit Bedingungen, (d) parallele Tätigkeiten→AND-Gateways, (e) Ausnahme-/Fehlerpfade und Schleifen/Rückführungen, (f) Prüfe jeden Split auf zugehörigen Join. Übersetze DANN diese Analyse in das JSON. Gib ausschliesslich das finale JSON aus.`;
 
-  const response = await fetch('/api/messages', {
+  const response = await processApiFetch('/api/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -1764,7 +1771,7 @@ Regeln RACI:
 
 Deutsch, Swiss-Konvention (kein ß). Kurz und präzise.`;
 
-  const response = await fetch('/api/messages', {
+  const response = await processApiFetch('/api/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -2399,7 +2406,7 @@ Regeln:
 - Vom Nutzer BEREITS ABGELEHNTE Befunde (siehe Liste) NICHT erneut oder in umformulierter Form vorschlagen.
 - Deutsch, Swiss-Konvention (kein ß).`;
 
-  const response = await fetch('/api/messages', {
+  const response = await processApiFetch('/api/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -2708,7 +2715,7 @@ async function syncDescription() {
   btn.disabled = true;
   try {
     setStatus('Beschreibung wird aus dem Modell neu erzeugt…', 'running');
-    const response = await fetch('/api/messages', {
+    const response = await processApiFetch('/api/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

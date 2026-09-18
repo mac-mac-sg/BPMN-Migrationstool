@@ -50,7 +50,10 @@ document.getElementById('source-file').addEventListener('change',async e=>{
 document.querySelectorAll('.tab,.example-chip').forEach(el=>{
   el.tabIndex=0;el.setAttribute('role','button');el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});
 });
-fetch('/api/health').then(r=>r.json()).then(s=>{
+if (document.documentElement.dataset.hosting === 'static') {
+  document.getElementById('api-status').textContent='○ Online-Vorschau · ohne KI';
+  document.getElementById('static-notice').hidden=false;
+} else fetch('/api/health').then(r=>r.json()).then(s=>{
   document.getElementById('api-status').textContent=s.configured?'● KI verbunden':'○ Demo · KI noch nicht eingerichtet';
 }).catch(()=>document.getElementById('api-status').textContent='○ Server nicht erreichbar');
 loadSavedIndex().then(renderHomeRecent);

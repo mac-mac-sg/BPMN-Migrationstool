@@ -28,7 +28,7 @@ Für eigene KI-generierte Prozesse `ANTHROPIC_API_KEY` in `.env` hinterlegen. Op
 
 ## Betrieb
 
-Standardmässig nur lokal unter `127.0.0.1`. Für einen Server `HOST=0.0.0.0` und ein starkes `APP_PASSWORD` setzen. Die HTTP-Basic-Anmeldung akzeptiert einen beliebigen Benutzernamen und das konfigurierte Passwort. Netzwerkbetrieb nur hinter einem HTTPS-Reverse-Proxy. Ein gemeinsames Passwort ersetzt keine unternehmensweite SSO-/Rollenlösung. Noch keine öffentliche Bereitstellung eingerichtet.
+Standardmässig nur lokal unter `127.0.0.1`. Für einen Server `HOST=0.0.0.0` und ein starkes `APP_PASSWORD` setzen. Die HTTP-Basic-Anmeldung akzeptiert einen beliebigen Benutzernamen und das konfigurierte Passwort. Netzwerkbetrieb nur hinter einem HTTPS-Reverse-Proxy. Ein gemeinsames Passwort ersetzt keine unternehmensweite SSO-/Rollenlösung. Das Frontend wird separat über GitHub Pages veröffentlicht (siehe unten).
 
 Bei Generierung, Rückfragen, KI-Checks und Nachbearbeitung werden die eingegebenen Inhalte und der benötigte Prozesskontext an Anthropic gesendet. Nur hierfür freigegebene Inhalte verwenden. Demo und Kapitel-Erkennung benötigen keinen Anbieteraufruf. Vor produktivem Unternehmenseinsatz Hosting, Anbieterfreigabe und Zugriffsmodell festlegen.
 
@@ -44,3 +44,13 @@ npm test
 `public/app.js` enthält die übernommene Prozesslogik; `public/homepage.js` die Homepage und Demo; `public/storage.js` den Browseradapter. `server.mjs` liefert ausschliesslich die freigegebenen Frontend-Dateien aus und vermittelt KI-Anfragen. API-Tests prüfen fehlende Konfiguration, Passwortschutz, Request-Validierung, Fremdherkunft, serverseitige Modellauswahl und abgeschnittene Antworten. Ein echter Anbieteraufruf erfordert einen eingerichteten API-Schlüssel und wurde ohne Schlüssel nicht getestet.
 
 Zusätzliche Smoke-Prüfung: Demo-Modell, Onepager/RACI-Rendering, Speichern und Wiederöffnen, Kapitel-Erkennung sowie BPMN-/Confluence-Export wurden in einer simulierten DOM-Umgebung ausgeführt; das Beispiel-BPMN ist wohlgeformtes XML mit gültigen Knotenreferenzen. Eine visuelle Browserprüfung war in der Erstellungsumgebung mangels verfügbarem Browser nicht möglich. Mobil- und Desktop-Layout sind implementiert, müssen jedoch im echten Browser abgenommen werden.
+
+## GitHub Pages
+
+Homepage: https://mac-mac-sg.github.io/BPMN-Migrationstool/
+
+Der Workflow `.github/workflows/pages.yml` prüft die Anwendung und veröffentlicht bei jedem Push auf `main` ausschliesslich das Frontend. Repository-Einstellung: **Settings → Pages → Source: GitHub Actions**. Ein manueller Start ist ebenfalls über Actions möglich.
+
+GitHub Pages führt `server.mjs` nicht aus. Die Online-Vorschau bietet Demo, Kapitel-Erkennung, Browser-Speicherung und Exporte; KI-Aufrufe werden mit einem verständlichen Hinweis abgefangen. Für die vollständige KI-Anwendung muss der Node-Server auf einem geeigneten Hosting betrieben werden. Niemals einen API-Schlüssel ins öffentliche Frontend oder ins Repository schreiben. Der Serverbetrieb bleibt unverändert möglich.
+
+Die Website ist öffentlich. Eingegebene Prozessdaten werden lokal im jeweiligen Browser gespeichert; sie werden nicht ins Repository veröffentlicht. GitHub-Pages-Projekte auf derselben Domain teilen sich den Browser-Origin.
