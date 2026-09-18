@@ -199,7 +199,7 @@ function lockGenerateBtn(locked, label) {
   const btn = document.getElementById('btn-generate');
   btn.disabled = locked;
   document.getElementById('btn-icon').textContent = locked ? '⏳' : '▶';
-  document.getElementById('btn-text').textContent = locked ? (label||'Generiere…') : 'Prozess generieren';
+  document.getElementById('btn-text').textContent = locked ? (label||'Generiere…') : (MODE === 'migrate' ? 'Prozess überführen' : 'Onepager erstellen');
 }
 
 function showOutputButtons() {
@@ -3117,11 +3117,10 @@ let legacyFlags = [];        // deterministische Befunde vor dem Modellaufruf
 
 function setMode(m) {
   MODE = m;
-  document.getElementById('mode-free').classList.toggle('active', m === 'free');
-  document.getElementById('mode-migrate').classList.toggle('active', m === 'migrate');
+  if (typeof updateWorkspaceView === 'function') updateWorkspaceView();
   document.getElementById('block-free').style.display    = (m === 'free')    ? '' : 'none';
   document.getElementById('block-migrate').style.display = (m === 'migrate') ? '' : 'none';
-  document.getElementById('btn-text').textContent = (m === 'migrate') ? 'Migrieren' : 'Prozess generieren';
+  document.getElementById('btn-text').textContent = (m === 'migrate') ? 'Prozess überführen' : 'Onepager erstellen';
   setStatus(m === 'migrate'
     ? 'Migrationsmodus — alte Prozessdokumentation einfügen'
     : 'Bereit — Prozessbeschreibung eingeben und generieren', '');

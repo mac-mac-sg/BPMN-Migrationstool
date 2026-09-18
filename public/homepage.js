@@ -1,12 +1,31 @@
+function updateWorkspaceView() {
+  const migration = MODE === 'migrate';
+  document.getElementById('workspace-eyebrow').textContent = migration ? 'PROZESSMANAGEMENT / MIGRATION' : 'PROZESSMANAGEMENT / NEUERSTELLUNG';
+  document.getElementById('workspace-title').textContent = migration ? 'Bestehenden Prozess überführen' : 'Neuen Prozess-Onepager erstellen';
+  document.getElementById('workspace-description').textContent = migration ? 'Bewahre vorhandenes Wissen und übertrage deinen Prozess ins neue Template.' : 'Beschreibe deinen Ablauf. Daraus entsteht eine strukturierte, zusammenhängende Dokumentation.';
+  document.getElementById('input-title').textContent = migration ? 'Alte Dokumentation' : 'Deine Prozessbeschreibung';
+  document.getElementById('input-description').textContent = migration ? 'Text einfügen oder einen Textexport hochladen. Prüfe zuerst die erkannten Kapitel.' : 'Was löst den Prozess aus, wer ist beteiligt und welche Schritte führen zum Ergebnis?';
+  document.getElementById('free-examples').hidden = migration;
+  document.getElementById('reset-process').textContent = migration ? '↺ Neue Migration' : '↺ Neuen Onepager beginnen';
+  document.getElementById('btn-text').textContent = migration ? 'Prozess überführen' : 'Onepager erstellen';
+  document.getElementById('workspace').dataset.mode = MODE;
+  if (!migration) document.getElementById('tab-migration').style.display = 'none';
+}
 function showHome() {
   document.getElementById('home').hidden = false;
   document.getElementById('workspace').hidden = true;
+  document.getElementById('workspace-heading').hidden = true;
+  document.getElementById('back-home').hidden = true;
   renderHomeRecent(); window.scrollTo(0,0);
 }
 function openWorkspace(mode) {
   document.getElementById('home').hidden = true;
   document.getElementById('workspace').hidden = false;
+  document.getElementById('workspace-heading').hidden = false;
+  document.getElementById('back-home').hidden = false;
   if (mode) { resetAll(); legacyCtx = null; legacyFlags = []; setMode(mode); }
+  updateWorkspaceView();
+  if (mode === 'free') switchTab('onepager');
   window.scrollTo(0,0);
   requestAnimationFrame(() => { if(currentLogicCore) bpmnZoomFit(); });
 }

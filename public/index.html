@@ -14,19 +14,22 @@
     <h1>Process Studio</h1>
     <span>Migration &amp; Prozessdokumentation · Inventx</span>
   </div>
-<nav class="top-nav"><button onclick="showHome()">Übersicht</button><button onclick="openWorkspace()">Arbeitsbereich</button><span id="api-status" role="status">Verbindung prüfen…</span></nav></header><aside id="static-notice" hidden style="padding:12px 24px;background:#20383d;color:#c6e4e2;font-size:12px;line-height:1.6">Online-Vorschau: Beispiel, Kapitel-Erkennung, Speicherung und Exporte sind nutzbar. Die KI-Erstellung eigener Prozesse benötigt eine zusätzliche Server-Anbindung.</aside>
+<nav class="top-nav"><button id="back-home" class="back-home" onclick="showHome()" hidden>← Back to Home</button><span id="api-status" role="status">Verbindung prüfen…</span></nav></header><aside id="static-notice" hidden style="padding:12px 24px;background:#20383d;color:#c6e4e2;font-size:12px;line-height:1.6">Online-Vorschau: Beispiel, Kapitel-Erkennung, Speicherung und Exporte sind nutzbar. Die KI-Erstellung eigener Prozesse benötigt eine zusätzliche Server-Anbindung.</aside>
 
 <main id="home">
 <div class="home-top"><span class="eyebrow">PROZESSMANAGEMENT / WORKSPACE</span><span class="workspace-pill">● Persönlicher Arbeitsbereich</span></div>
-<section class="hero"><div><div class="eyebrow accent">VON DER BESCHREIBUNG ZUM PROZESS.</div><h2>Wissen bewahren.<br>Prozesse <em>klar machen.</em></h2><p>Bestehende Dokumentation migrieren oder einen neuen Prozess beschreiben. Aus einer Grundlage entstehen Onepager, BPMN-Modell und klare Verantwortlichkeiten.</p><button class="hero-cta" onclick="openWorkspace('migrate')">Migration starten <span>↗</span></button><button class="demo-link" onclick="loadDemo()">Beispiel erkunden →</button></div>
+<section class="hero"><div><div class="eyebrow accent">VON DER BESCHREIBUNG ZUM PROZESS.</div><h2>Wissen bewahren.<br>Prozesse <em>klar machen.</em></h2><p>Bestehende Dokumentation migrieren oder einen neuen Prozess beschreiben. Aus einer Grundlage entstehen Onepager, BPMN-Modell und klare Verantwortlichkeiten.</p></div>
 <div class="process-visual" aria-label="Vom bestehenden Dokument zu Onepager, BPMN und RACI"><div class="visual-tag">EINE QUELLE. EIN KLARES BILD.</div><div class="source-card"><span>≡</span><div>Dein Prozess<small>Wissen · Rollen · Ablauf</small></div><b>01</b></div><div class="flow-line"></div><div class="visual-targets"><div>▤<strong>Onepager</strong><small>Kompakt dokumentiert</small></div><div>◇<strong>BPMN</strong><small>Visuell modelliert</small></div><div>⊞<strong>RACI</strong><small>Klar zugeordnet</small></div></div><div class="visual-foot"><span>●</span> Zusammenhängend. Nachvollziehbar. Exportierbar.</div></div></section>
 <div class="section-heading"><h3>Wie möchtest du starten?</h3><span>Dein nächster Schritt</span></div>
-<section class="entry-grid"><button class="entry-card" onclick="openWorkspace('migrate')"><span class="card-number">01 / MIGRATION</span><span class="card-arrow">↗</span><h3>Bestehenden Prozess<br>überführen</h3><p>Alte Dokumentation einlesen, Kapitel zuordnen und ins neue Template übertragen.</p><span class="card-foot">Mit Herkunftsnachweis & Migrationsreport →</span></button><button class="entry-card" onclick="openWorkspace('free')"><span class="card-number">02 / NEUER PROZESS</span><span class="card-arrow">↗</span><h3>Prozess-Onepager<br>erstellen</h3><p>Ablauf in eigenen Worten beschreiben und strukturiert dokumentieren.</p><span class="card-foot">Mit BPMN-Modell & RACI-Matrix →</span></button><button class="entry-card demo-card" onclick="loadDemo()"><span class="card-number">03 / ENTDECKEN</span><span class="card-arrow">↗</span><h3>Am Beispiel<br>kennenlernen</h3><p>Service Request: vom Auftrag bis zum Abschluss. Alle Ansichten direkt ausprobieren.</p><span class="card-foot">Vorbereitetes Beispiel · ohne KI-Aufruf →</span></button></section>
+<section class="entry-grid"><button class="entry-card" onclick="openWorkspace('migrate')"><span class="card-number">01 / MIGRATION</span><span class="card-arrow">↗</span><h3>Bestehenden Prozess<br>überführen</h3><p>Alte Dokumentation einlesen, Kapitel zuordnen und ins neue Template übertragen.</p><span class="card-foot">Mit Herkunftsnachweis & Migrationsreport →</span></button><button class="entry-card" onclick="openWorkspace('free')"><span class="card-number">02 / NEUER PROZESS</span><span class="card-arrow">↗</span><h3>Neuen Prozess-Onepager<br>erstellen</h3><p>Ablauf in eigenen Worten beschreiben und strukturiert dokumentieren.</p><span class="card-foot">Mit BPMN-Modell & RACI-Matrix →</span></button></section><section class="demo-section"><button class="entry-card demo-card" onclick="loadDemo()"><span class="card-number">ZUM KENNENLERNEN</span><span class="card-arrow">↗</span><h3>Am Beispiel kennenlernen</h3><p>Service Request: vom Auftrag bis zum Abschluss. Alle Ansichten direkt ausprobieren.</p><span class="card-foot">Vorbereitetes Beispiel · ohne KI-Aufruf →</span></button></section>
 <div class="section-heading recent-heading"><h3>Zuletzt bearbeitet</h3><span id="home-count">0 Prozesse</span></div><section id="home-recent"></section>
-<footer>Process Studio <span>Entwürfe werden in diesem Browser gespeichert. KI-Ergebnisse vor Freigabe fachlich prüfen.</span></footer></main><div class="app" id="workspace" hidden>
+<footer>Process Studio <span>Entwürfe werden in diesem Browser gespeichert. KI-Ergebnisse vor Freigabe fachlich prüfen.</span></footer></main><section id="workspace-heading" class="workspace-heading" hidden>
+<div><span id="workspace-eyebrow" class="eyebrow accent">MIGRATION</span><h2 id="workspace-title">Bestehenden Prozess überführen</h2><p id="workspace-description">Übertrage vorhandenes Prozesswissen in eine klare, einheitliche Dokumentation.</p></div>
+<div class="workspace-steps"><span><b>01</b> Grundlage</span><span><b>02</b> Entwurf</span><span><b>03</b> Prüfen & exportieren</span></div>
+</section><div class="app" id="workspace" hidden>
   <!-- Input Panel -->
   <div class="input-panel">
-    <div id="saved-section">
+    <div id="saved-section" hidden>
       <div class="section-label" style="display:flex;justify-content:space-between;align-items:center">
         <span>Bearbeitete Prozesse</span>
         <span class="saved-count" id="saved-count">0</span>
@@ -36,12 +39,7 @@
       </div>
     </div>
 
-    <hr class="divider">
-
-    <div class="mode-switch">
-      <button class="mode-btn active" id="mode-free" onclick="setMode('free')">Freitext</button>
-      <button class="mode-btn" id="mode-migrate" onclick="setMode('migrate')">Migration</button>
-    </div>
+<div class="input-heading"><span class="eyebrow">01 / GRUNDLAGE</span><h3 id="input-title">Alte Dokumentation</h3><p id="input-description">Füge deinen bestehenden Prozess ein oder lade einen Textexport hoch.</p></div>
 
     <div id="block-free">
       <label class="section-label" for="process-input">Prozessbeschreibung</label>
@@ -93,8 +91,8 @@ Erkannt werden die Kapitel des alten Templates: Basisinformationen, Personen, Pr
 
     <hr class="divider">
 
-    <div>
-      <div class="section-label">Beispiele</div>
+    <div id="free-examples">
+      <div class="section-label">Inspiration für deine Beschreibung</div>
       <div class="examples-grid">
         <div class="example-chip" onclick="setExample(0)">💳 Kreditantrag (Bank)</div>
         <div class="example-chip" onclick="setExample(1)">🛒 Bestellabwicklung (E-Commerce)</div>
@@ -106,11 +104,11 @@ Erkannt werden die Kapitel des alten Templates: Basisinformationen, Personen, Pr
 
     <hr class="divider">
 
-    <button class="btn-secondary" onclick="resetAll()">↺ Neuer Prozess</button>
+    <button class="btn-secondary" id="reset-process" onclick="resetAll(); updateWorkspaceView()">↺ Neue Migration</button>
   </div>
 
   <!-- Output Panel -->
-  <div class="output-panel">
+  <div class="output-panel"><div class="output-heading"><div><span class="eyebrow">02 / ERGEBNIS</span><h3>Deine Prozessdokumentation</h3></div><span class="draft-badge">Entwurf · fachlich prüfen</span></div>
     <div class="tabs">
       <div class="tab active" id="tab-bpmn" onclick="switchTab('bpmn')">BPMN Diagramm</div>
       <div class="tab" id="tab-onepager" onclick="switchTab('onepager')">Prozess-Onepager</div>
