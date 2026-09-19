@@ -54,3 +54,23 @@ Der Workflow `.github/workflows/pages.yml` prüft die Anwendung und veröffentli
 GitHub Pages führt `server.mjs` nicht aus. Die Online-Vorschau bietet Demo, Kapitel-Erkennung, Browser-Speicherung und Exporte; KI-Aufrufe werden mit einem verständlichen Hinweis abgefangen. Für die vollständige KI-Anwendung muss der Node-Server auf einem geeigneten Hosting betrieben werden. Niemals einen API-Schlüssel ins öffentliche Frontend oder ins Repository schreiben. Der Serverbetrieb bleibt unverändert möglich.
 
 Die Website ist öffentlich. Eingegebene Prozessdaten werden lokal im jeweiligen Browser gespeichert; sie werden nicht ins Repository veröffentlicht. GitHub-Pages-Projekte auf derselben Domain teilen sich den Browser-Origin.
+
+## Qualitätsüberarbeitung und Claude-Export
+
+- Modellprüfungen verändern keine Rollen, Start-/Endereignisse oder Verbindungen mehr. Fehlende Erreichbarkeit, Entscheidungsbedingungen und offene Fragen werden sichtbar gemeldet. Dies ist eine regelbasierte Prüfung, keine vollständige BPMN-Semantikprüfung oder fachliche Freigabe.
+- Die Anordnung löst Rücksprünge vor der Spaltenberechnung auf. Aufgaben sind grösser; Rückwege erhalten eigene untere Spuren. Der BPMN-XML-Export verwendet dieselben Sequenzfluss-Wegpunkte wie die Vorschau. Bei komplexen Abläufen bleiben manuelle Layoutkorrekturen mögliches Folgeprojekt.
+- Klick auf einen Knoten öffnet die direkte Bearbeitung von Bezeichnung und ausführender Rolle, ohne KI. Änderungen markieren Onepager/RACI als prüfbedürftig; «Rückgängig» stellt auch diesen Status wieder her.
+- Onepager-Regeln richten sich an beliebige Mitarbeitende bei Inventx: kurze aktive Sätze, belegte Abgrenzungen, Überblick statt Arbeitsanweisung. Einzelne Texte können manuell bearbeitet oder als KI-Sprachvorschlag zur Prüfung angefordert werden. Links werden im Onepager angezeigt.
+- «Arbeitsstand sichern/öffnen» überträgt Modell, Dokumente, Quelltexte, Migration, Rollenkatalog, Optionen, Rückfragen und Rückgängig-Verlauf als versionierte JSON-Datei. Bestehende gespeicherte Prozesse werden beim Import nicht überschrieben.
+
+### In Claude öffnen
+
+`npm run build:claude` erzeugt `dist/prozess-migrations-tool.html` mit eingebetteten Styles und Skripten. In Claude hochladen und bitten:
+
+> Öffne diese Datei als interaktives KI-gestütztes HTML-Artefakt. Erhalte Design, Modellierungsregeln und Funktionen. Verwende Claudes integrierten Artefakt-KI-Zugang ohne persönlichen API-Schlüssel. Falls erforderlich, passe ausschliesslich processApiFetch an die aktuelle Artefakt-Umgebung an. Teste Modellgenerierung, Speicherung und Downloads.
+
+Der Adapter nutzt den Anthropic-Messages-Aufruf aus der ursprünglichen funktionierenden Artefakt-Vorlage. Vorhandenes `window.storage` wird erhalten; ausserhalb Claude dient Browser-Speicherung als Fallback. Die Datei ist kein eigenständig authentifizierter API-Client. Die KI funktioniert nur, wenn die Claude-Artefakt-Umgebung diesen Aufruf bereitstellt. Die echte Claude-Ausführung wurde hier nicht getestet. GitHub Pages bleibt ohne KI-Backend eine Demo-/Bearbeitungsoberfläche.
+
+### Nachweis und Grenzen
+
+`npm test` prüft Server sowie Referenzmodelle mit Rücksprung, Parallelität, Randereignis und fehlenden Verbindungen. Ein DOM-Test prüft Navigation, Speichern/Öffnen, Exporte, direkte Bearbeitung, Undo und vollständigen JSON-Import. `npm run check` prüft die Skript-Syntax. Der Browser-Download war in der Entwicklungsumgebung nicht erreichbar; daher keine vollständige visuelle Browserprüfung. Ein Austausch gegen bpmn-js/bpmnlint ist noch nicht enthalten: zunächst wurde der vorhandene, exportierbare Renderer verbessert.

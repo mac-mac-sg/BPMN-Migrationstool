@@ -53,7 +53,7 @@ async function loadDemo() {
   };
   currentLogicCore=lc; currentSourceText='Beispiel: Ein Standardauftrag wird über das Self-Service-Portal erteilt. Der ICT Supporter prüft die Vollständigkeit. Fehlende Angaben lässt er ergänzen und prüft erneut. Der Service Owner erbringt die Leistung. Anschliessend dokumentiert der ICT Supporter den Abschluss.';
   document.getElementById('process-input').value=currentSourceText;
-  currentOnepager={processName:lc.processName,version:'Beispiel',date:new Date().toLocaleDateString('de-CH'),scope:'Standardisierte Kundenaufträge aus dem Servicekatalog. CAB-relevante Changes sind nicht Bestandteil dieses Prozesses.',shortDescription:lc.description+' Jeder Standardauftrag folgt einem definierten Workflow. Leistungsumfang, Preis und Lieferzeit werden im Servicekatalog festgelegt.',goals:['Standardaufträge vollständig und nachvollziehbar abwickeln.','Vereinbarte Lieferzeiten einhalten.','Verantwortlichkeiten je Arbeitsschritt klar zuordnen.'],risks:[{label:'Unvollständige Aufträge verzögern die Erfüllung.',severity:'mittel',mitigation:'Pflichtangaben vor Bearbeitung prüfen.'}],steps:lc.nodes.filter(n=>n.type==='userTask').map((n,i)=>({nr:i+1,activity:n.label,description:n.label,input:'Service Request',output:'Aktualisierter Auftrag',system:'BMC Helix',remark:''}))};
+  currentOnepager={processName:lc.processName,version:'Beispiel',date:new Date().toLocaleDateString('de-CH'),scope:'Dieser Prozess gilt für standardisierte Kundenaufträge aus dem Servicekatalog. Er richtet sich an die Mitarbeitenden, die diese Aufträge prüfen und ausführen. Aufträge, die vom Change Advisory Board beurteilt werden müssen, werden in einem anderen Prozess bearbeitet.',shortDescription:'Kunden bestellen eine vordefinierte Leistung im Self-Service-Portal. Der ICT Supporter prüft den Auftrag und lässt fehlende Angaben ergänzen. Sobald alle Angaben vorliegen, erbringt im dargestellten Beispiel der Service Owner die bestellte Leistung. Danach dokumentiert der ICT Supporter den Abschluss. Leistungsumfang, Preis und Lieferzeit sind im Servicekatalog festgelegt.',goals:['Standardaufträge vollständig und nachvollziehbar abwickeln.','Vereinbarte Lieferzeiten einhalten.','Verantwortlichkeiten je Arbeitsschritt klar zuordnen.'],risks:[{label:'Unvollständige Aufträge verzögern die Erfüllung.',severity:'mittel',mitigation:'Pflichtangaben vor Bearbeitung prüfen.'}],steps:lc.nodes.filter(n=>n.type==='userTask').map((n,i)=>({nr:i+1,activity:n.label,description:n.label,input:'Service Request',output:'Aktualisierter Auftrag',system:'BMC Helix',remark:''}))};
   currentRaci={roles:['ICT Supporter','Service Owner'],activities:currentOnepager.steps.map(s=>({nr:s.nr,activity:s.activity,assignments:{'ICT Supporter':s.nr===3?'A':'R','Service Owner':s.nr===3?'R':'A'}}))};
   validateAndRepair(lc); renderBpmn(lc); renderOnepager(currentOnepager); renderRaci(currentRaci); renderXmlTab(lc); showOutputButtons(); switchTab('bpmn');
   document.getElementById('refine-bar').style.display='flex';
@@ -69,7 +69,9 @@ document.getElementById('source-file').addEventListener('change',async e=>{
 document.querySelectorAll('.tab,.example-chip').forEach(el=>{
   el.tabIndex=0;el.setAttribute('role','button');el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});
 });
-if (document.documentElement.dataset.hosting === 'static') {
+if (document.documentElement.dataset.hosting === 'claude') {
+  document.getElementById('api-status').textContent='Claude-Artefakt · KI im Artefakt nutzen';
+} else if (document.documentElement.dataset.hosting === 'static') {
   document.getElementById('api-status').textContent='○ Online-Vorschau · ohne KI';
   document.getElementById('static-notice').hidden=false;
 } else fetch('/api/health').then(r=>r.json()).then(s=>{

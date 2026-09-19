@@ -14,7 +14,7 @@
     <h1>Process Studio</h1>
     <span>Migration &amp; Prozessdokumentation · Inventx</span>
   </div>
-<nav class="top-nav"><button id="back-home" class="back-home" onclick="showHome()" hidden>← Back to Home</button><span id="api-status" role="status">Verbindung prüfen…</span></nav></header><aside id="static-notice" hidden style="padding:12px 24px;background:#20383d;color:#c6e4e2;font-size:12px;line-height:1.6">Online-Vorschau: Beispiel, Kapitel-Erkennung, Speicherung und Exporte sind nutzbar. Die KI-Erstellung eigener Prozesse benötigt eine zusätzliche Server-Anbindung.</aside>
+<nav class="top-nav"><button id="back-home" class="back-home" onclick="showHome()" hidden>← Back to Home</button><span id="api-status" role="status">Verbindung prüfen…</span></nav></header><div class="working-copy-tools"><button class="btn-icon" onclick="exportWorkingCopy()">↓ Arbeitsstand sichern</button><button class="btn-icon" onclick="document.getElementById('working-copy-file').click()">↑ Arbeitsstand öffnen</button><input type="file" id="working-copy-file" accept=".json,application/json" hidden onchange="importWorkingCopy(this.files[0])"></div><aside id="static-notice" hidden style="padding:12px 24px;background:#20383d;color:#c6e4e2;font-size:12px;line-height:1.6">Online-Vorschau: Beispiel, Kapitel-Erkennung, Speicherung und Exporte sind nutzbar. Die KI-Erstellung eigener Prozesse benötigt eine zusätzliche Server-Anbindung.</aside>
 
 <main id="home">
 <div class="home-top"><span class="eyebrow">PROZESSMANAGEMENT / WORKSPACE</span><span class="workspace-pill">● Persönlicher Arbeitsbereich</span></div>
@@ -127,7 +127,10 @@ Erkannt werden die Kapitel des alten Templates: Basisinformationen, Personen, Pr
       </div>
     </div>
 
+    <div id="document-state" class="quality-review" hidden><strong>Dokumente prüfen</strong><p>Das Modell wurde geändert. Onepager und RACI können vom aktuellen Ablauf abweichen.</p><button class="btn-secondary" onclick="refreshDocuments()">Onepager und RACI aktualisieren</button></div>
     <div class="tab-content active" id="content-bpmn">
+      <div id="quality-review" class="quality-review" hidden></div>
+      <div id="node-editor" class="edit-panel" hidden><strong>Ausgewählten Schritt bearbeiten</strong><label>Bezeichnung<input id="node-label" maxlength="180"></label><label>Ausführende Rolle<select id="node-lane"></select></label><button class="btn-secondary" onclick="saveNodeEdit()">Schritt speichern</button><button class="btn-icon" onclick="document.getElementById('node-editor').hidden=true">Schliessen</button></div>
       <div id="bpmn-canvas">
         <div class="empty-state" id="bpmn-empty">
           <div class="empty-icon" style="color:var(--ix-red)">▢</div>
@@ -150,6 +153,9 @@ Erkannt werden die Kapitel des alten Templates: Basisinformationen, Personen, Pr
     </div>
 
     <div class="tab-content" id="content-onepager">
+      <div class="editor-tools"><button class="btn-secondary" onclick="editOnepagerTexts()">Texte bearbeiten</button><button class="btn-secondary" data-rewrite onclick="simplifyOnepager('scope')">Geltungsbereich vereinfachen</button><button class="btn-secondary" data-rewrite onclick="simplifyOnepager('shortDescription')">Kurzbeschrieb vereinfachen</button><button class="btn-icon" onclick="undoModel()">↶ Rückgängig</button></div>
+      <div id="readability-review" class="quality-review" hidden></div>
+      <div id="text-editor" class="edit-panel" hidden><p>Original und Vorschlag vergleichen. Erst «Texte übernehmen» ersetzt den Onepager.</p><label>Geltungsbereich<textarea id="scope-text" rows="4"></textarea></label><label>Prozess-Kurzbeschrieb<textarea id="description-text" rows="6"></textarea></label><button class="btn-secondary" onclick="saveOnepagerTexts()">Texte übernehmen</button><button class="btn-icon" onclick="document.getElementById('text-editor').hidden=true">Verwerfen</button></div>
       <div id="onepager-content">
         <div class="empty-state">
           <div class="empty-icon">📄</div>
@@ -254,6 +260,6 @@ Erkannt werden die Kapitel des alten Templates: Basisinformationen, Personen, Pr
   </div>
 </div>
 
-<script src="./storage.js"></script><script src="./app.js"></script><script src="./homepage.js"></script>
+<script src="./storage.js"></script><script src="./quality.js"></script><script src="./app.js"></script><script src="./workbench.js"></script><script src="./homepage.js"></script>
 </body>
 </html>

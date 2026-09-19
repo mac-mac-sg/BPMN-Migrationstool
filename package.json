@@ -4,6 +4,13 @@
   "private": true,
   "type": "module",
   "description": "Process Studio: Prozessmigration, BPMN und Onepager auf Basis der Projektvorlage",
-  "engines": {"node": ">=22"},
-  "scripts": {"start": "node --env-file-if-exists=.env server.mjs", "test": "node --test", "check": "node --check server.mjs && node --check public/app.js && node --check public/homepage.js"}
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "test": "node --test",
+    "check": "node --check server.mjs && node --check public/app.js && node --check public/homepage.js && node --check public/quality.js && node --check public/workbench.js",
+    "build:claude": "node scripts/build-claude.mjs"
+  }
 }
